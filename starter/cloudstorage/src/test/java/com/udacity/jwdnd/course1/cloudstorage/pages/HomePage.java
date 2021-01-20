@@ -9,6 +9,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class HomePage {
+    public static final String ADD_NOTE_BUTTON = "add-note-button";
+    public static final String NOTE_TITLE = "noteTitle";
+    public static final String NOTE_DESCRIPTION = "noteDescription";
+    public static final String NOTE_MODAL = "noteModal";
+
     @FindBy(id = "logout-button")
     private WebElement logoutButton;
 
@@ -20,8 +25,6 @@ public class HomePage {
 
     @FindBy(id = "nav-credentials-tab")
     private WebElement credentialsTab;
-
-    public static final String NOTE_MODAL = "noteModal";
 
     private WebDriverWait wait;
 
@@ -36,15 +39,16 @@ public class HomePage {
 
     public void addNote(String noteTitle, String noteDescription) {
         this.notesTab.click();
-        WebElement addNoteButton = this.waitUntilClickable(By.id("add-note-button"));
+
+        WebElement addNoteButton = this.waitUntilClickable(By.id(ADD_NOTE_BUTTON));
         addNoteButton.click();
 
         WebElement noteModal = this.getNoteModal();
 
-        WebElement titleField = noteModal.findElement(By.name("noteTitle"));
+        WebElement titleField = noteModal.findElement(By.name(NOTE_TITLE));
         titleField.sendKeys(noteTitle);
 
-        WebElement descriptionField = noteModal.findElement(By.name("noteDescription"));
+        WebElement descriptionField = noteModal.findElement(By.name(NOTE_DESCRIPTION));
         descriptionField.sendKeys(noteDescription);
         descriptionField.submit();
     }

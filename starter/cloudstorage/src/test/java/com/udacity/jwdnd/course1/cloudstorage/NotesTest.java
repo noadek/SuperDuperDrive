@@ -19,11 +19,13 @@ public class NotesTest extends BaseTest {
     }
 
     @Test
-    public void testCreateNote() {
+    public void testCreateNote() throws InterruptedException {
         String noteTitle = "a note title";
         String noteDescription = "a note description";
 
         this.homePage.addNote(noteTitle, noteDescription);
+
+        Thread.sleep(5000);
     }
 
     @Test
