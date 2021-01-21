@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.pages;
 
+import com.udacity.jwdnd.course1.cloudstorage.models.Note;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,6 +14,8 @@ public class HomePage {
     public static final String NOTE_TITLE = "noteTitle";
     public static final String NOTE_DESCRIPTION = "noteDescription";
     public static final String NOTE_MODAL = "noteModal";
+    public static final String NOTE_TITLE_CELL = "note-title";
+    public static final String NOTE_DESCRIPTION_CELL = "note-description";
 
     @FindBy(id = "logout-button")
     private WebElement logoutButton;
@@ -37,8 +40,12 @@ public class HomePage {
         this.logoutButton.click();
     }
 
-    public void addNote(String noteTitle, String noteDescription) {
+    public void openNotesTab() {
         this.notesTab.click();
+    }
+
+    public void addNote(String noteTitle, String noteDescription) {
+        this.openNotesTab();
 
         WebElement addNoteButton = this.waitUntilClickable(By.id(ADD_NOTE_BUTTON));
         addNoteButton.click();
@@ -51,6 +58,13 @@ public class HomePage {
         WebElement descriptionField = noteModal.findElement(By.name(NOTE_DESCRIPTION));
         descriptionField.sendKeys(noteDescription);
         descriptionField.submit();
+    }
+
+    public Note getFirstNote() {
+        WebElement title = waitUntilVisible(By.className(NOTE_TITLE_CELL));
+        WebElement description = waitUntilVisible(By.className(NOTE_DESCRIPTION_CELL));
+
+        return new Note(null, title.getText(), description.getText(), null);
     }
 
     private WebElement getNoteModal() {

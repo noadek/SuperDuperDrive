@@ -1,9 +1,12 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.models.Note;
 import com.udacity.jwdnd.course1.cloudstorage.pages.HomePage;
 import com.udacity.jwdnd.course1.cloudstorage.util.AuthenticationUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class NotesTest extends BaseTest {
 
@@ -19,13 +22,18 @@ public class NotesTest extends BaseTest {
     }
 
     @Test
-    public void testCreateNote() throws InterruptedException {
-        String noteTitle = "a note title";
-        String noteDescription = "a note description";
+    public void testCreateNote() {
+        String noteTitle = "My note title";
+        String noteDescription = "This is a test note description";
 
         this.homePage.addNote(noteTitle, noteDescription);
+        this.getPage("/");
+        this.homePage.openNotesTab();
 
-        Thread.sleep(5000);
+        Note expectedNote = this.homePage.getFirstNote();
+
+        assertEquals(expectedNote.getNoteTitle(), noteTitle);
+        assertEquals(expectedNote.getNoteDescription(), noteDescription);
     }
 
     @Test
