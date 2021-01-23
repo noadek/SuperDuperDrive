@@ -14,6 +14,7 @@ public class HomePage {
     public static final String NOTE_TITLE = "noteTitle";
     public static final String NOTE_DESCRIPTION = "noteDescription";
     public static final String NOTE_MODAL = "noteModal";
+    public static final String NOTE_ROW = "note-row";
     public static final String NOTE_TITLE_CELL = "note-title";
     public static final String NOTE_DESCRIPTION_CELL = "note-description";
 
@@ -51,7 +52,6 @@ public class HomePage {
         addNoteButton.click();
 
         WebElement noteModal = this.getNoteModal();
-
         WebElement titleField = noteModal.findElement(By.name(NOTE_TITLE));
         titleField.sendKeys(noteTitle);
 
@@ -60,11 +60,34 @@ public class HomePage {
         descriptionField.submit();
     }
 
+    public void editNote(String noteTitle, String noteDescription) {
+        this.openNotesTab();
+
+        WebElement noteRow = this.getNoteRow();
+        WebElement editButton = noteRow.findElement(By.tagName("button"));
+        editButton.click();
+
+        WebElement noteModal = this.getNoteModal();
+        WebElement titleField = noteModal.findElement(By.name(NOTE_TITLE));
+        titleField.clear();
+        titleField.sendKeys(noteTitle);
+
+        WebElement descriptionField = noteModal.findElement(By.name(NOTE_DESCRIPTION));
+        descriptionField.clear();
+        descriptionField.sendKeys(noteDescription);
+        descriptionField.submit();
+    }
+
     public Note getFirstNote() {
-        WebElement title = waitUntilVisible(By.className(NOTE_TITLE_CELL));
-        WebElement description = waitUntilVisible(By.className(NOTE_DESCRIPTION_CELL));
+        WebElement noteRow = this.getNoteRow();
+        WebElement title = noteRow.findElement(By.className(NOTE_TITLE_CELL));
+        WebElement description = noteRow.findElement(By.className(NOTE_DESCRIPTION_CELL));
 
         return new Note(null, title.getText(), description.getText(), null);
+    }
+
+    private WebElement getNoteRow() {
+        return waitUntilVisible(By.className(NOTE_ROW));
     }
 
     private WebElement getNoteModal() {

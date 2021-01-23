@@ -21,14 +21,25 @@ public class NotesTest extends BaseTest {
         this.homePage = new HomePage(this.driver);
     }
 
+    private void addNote() {
+        String title = "My note title";
+        String description = "This is a test note description";
+
+        this.addNote(title, description);
+    }
+
+    private void addNote(String title, String description) {
+        this.homePage.addNote(title, description);
+        this.getPage("/");
+        this.homePage.openNotesTab();
+    }
+
     @Test
     public void testCreateNote() {
         String noteTitle = "My note title";
         String noteDescription = "This is a test note description";
 
-        this.homePage.addNote(noteTitle, noteDescription);
-        this.getPage("/");
-        this.homePage.openNotesTab();
+        this.addNote(noteTitle, noteDescription);
 
         Note expectedNote = this.homePage.getFirstNote();
 
@@ -37,7 +48,24 @@ public class NotesTest extends BaseTest {
     }
 
     @Test
-    public void testViewNote() {
+    public void testEditNote() {
+        this.addNote();
+
+        String updateNoteTitle = "My updated title";
+        String updateNoteDescription = "This is an updated note description";
+
+        this.homePage.editNote(updateNoteTitle, updateNoteDescription);
+        this.getPage("/");
+        this.homePage.openNotesTab();
+
+        Note expectedNote = this.homePage.getFirstNote();
+
+        assertEquals(expectedNote.getNoteTitle(), updateNoteTitle);
+        assertEquals(expectedNote.getNoteDescription(), updateNoteDescription);
+    }
+
+    @Test
+    public void testDeleteNote() {
 
     }
 

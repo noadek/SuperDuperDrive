@@ -85,9 +85,15 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="note : ${notes}">
+                        <tr class="note-row" th:each="note : ${notes}">
                             <td>
-                                <button type="button" class="btn btn-success">Edit</button>
+                                <button type="button" class="btn btn-success"
+                                        th:data-id="${note.noteId}"
+                                        th:data-title="${note.noteTitle}"
+                                        th:data-description="${note.noteDescription}"
+                                        onclick="showNoteModal(this.getAttribute('data-id'), this.getAttribute('data-title'), this.getAttribute('data-description'))">
+                                    Edit
+                                </button>
                                 <a class="btn btn-danger">Delete</a>
                             </td>
                             <th class="note-title" scope="row" th:text="${note.noteTitle}"></th>
@@ -107,7 +113,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="#" th:action="@{/note/add}" method="POST">
+                                <form action="#" th:action="@{/note}" method="POST">
                                     <input type="hidden" name="noteId" id="note-id">
                                     <div class="form-group">
                                         <label for="note-title" class="col-form-label">Title</label>

@@ -29,11 +29,11 @@ public class NoteService {
         ));
     }
 
-    public void updateNote(Note note) {
-        this.noteMapper.update(note);
+    public int updateNote(Note note) {
+        return this.noteMapper.update(note);
     }
 
-    public void deleteNote(Note note) {
-        this.noteMapper.delete(note);
+    public int deleteNote(Note note) {
+        return this.noteMapper.delete(note);
     }
 }

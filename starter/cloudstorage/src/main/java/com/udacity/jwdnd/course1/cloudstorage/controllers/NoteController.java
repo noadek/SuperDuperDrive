@@ -21,20 +21,32 @@ public class NoteController {
         this.userService = userService;
     }
 
-    @PostMapping("/note/add")
+    @PostMapping("/note")
     public RedirectView add(Authentication authentication, Note note, RedirectAttributes model) {
         String error = null;
+        String success = null;
 
         User user = this.userService.getUser(authentication.getName());
         note.setUserId(user.getUserId());
 
-        int rowsAdded = this.noteService.createNote(note);
-        if (rowsAdded < 0) {
-            error = "There was an error signing you up. Please try again.";
+        if (note.getNoteId() == null) {
+            int rowsAdded = this.noteService.createNote(note);
+            if (rowsAdded < 0) {
+                error = "There was an error. Please try again.";
+            } else {
+                success = "Note added";
+            }
+        } else {
+            int rowsAffected = this.noteService.updateNote(note);
+            if (rowsAffected > 0) {
+                success = "Note updated";
+            } else {
+                error = "There was an error. Please try again.";
+            }
         }
 
         if (error == null) {
-            model.addAttribute("success", "Note added");
+            model.addAttribute("success", success);
         } else {
             model.addAttribute("error", error);
         }
