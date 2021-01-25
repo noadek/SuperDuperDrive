@@ -14,7 +14,7 @@ public class HomePage {
     public static final String NOTE_TITLE = "noteTitle";
     public static final String NOTE_DESCRIPTION = "noteDescription";
     public static final String NOTE_MODAL = "noteModal";
-    public static final String NOTE_ROW = "note-row";
+    public static final String NOTE_TABLE_ID = "userTable";
     public static final String NOTE_TITLE_CELL = "note-title";
     public static final String NOTE_DESCRIPTION_CELL = "note-description";
 
@@ -63,7 +63,7 @@ public class HomePage {
     public void editNote(String noteTitle, String noteDescription) {
         this.openNotesTab();
 
-        WebElement noteRow = this.getNoteRow();
+        WebElement noteRow = this.getNoteTable();
         WebElement editButton = noteRow.findElement(By.tagName("button"));
         editButton.click();
 
@@ -79,15 +79,25 @@ public class HomePage {
     }
 
     public Note getFirstNote() {
-        WebElement noteRow = this.getNoteRow();
+        this.openNotesTab();
+
+        WebElement noteRow = this.getNoteTable();
         WebElement title = noteRow.findElement(By.className(NOTE_TITLE_CELL));
         WebElement description = noteRow.findElement(By.className(NOTE_DESCRIPTION_CELL));
 
         return new Note(null, title.getText(), description.getText(), null);
     }
 
-    private WebElement getNoteRow() {
-        return waitUntilVisible(By.className(NOTE_ROW));
+    public void deleteFirstNote() {
+        this.openNotesTab();
+
+        WebElement noteRow = this.getNoteTable();
+        WebElement deleteNoteButton = noteRow.findElement(By.tagName("a"));
+        deleteNoteButton.click();
+    }
+
+    private WebElement getNoteTable() {
+        return waitUntilVisible(By.id(NOTE_TABLE_ID));
     }
 
     private WebElement getNoteModal() {

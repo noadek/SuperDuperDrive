@@ -94,7 +94,7 @@
                                         onclick="showNoteModal(this.getAttribute('data-id'), this.getAttribute('data-title'), this.getAttribute('data-description'))">
                                     Edit
                                 </button>
-                                <a class="btn btn-danger">Delete</a>
+                                <a class="btn btn-danger" th:href="@{/note/delete/{id}(id=${note.noteId})}">Delete</a>
                             </td>
                             <th class="note-title" scope="row" th:text="${note.noteTitle}"></th>
                             <td class="note-description" th:text="${note.noteDescription}"></td>
