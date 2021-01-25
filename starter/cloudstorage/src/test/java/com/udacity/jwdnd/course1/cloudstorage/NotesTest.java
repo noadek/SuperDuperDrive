@@ -11,21 +11,8 @@ public class NotesTest extends BaseTest {
 
     private HomePage homePage;
 
-    private void addNote() {
-        String title = "My note title";
-        String description = "This is a test note description";
-
-        this.addNote(title, description);
-    }
-
-    private void addNote(String title, String description) {
-        this.homePage.addNote(title, description);
-        this.getPage("/");
-        this.homePage.openNotesTab();
-    }
-
     @Test
-    public void testCreateNote() {
+    public void testCreateDeleteEditNote() {
         this.homePage = new HomePage(this.driver);
 
         String noteTitle = "My note title";
@@ -37,22 +24,13 @@ public class NotesTest extends BaseTest {
 
         assertEquals(expectedNote.getNoteTitle(), noteTitle);
         assertEquals(expectedNote.getNoteDescription(), noteDescription);
-    }
 
-    @Test
-    public void testDeleteNote() {
-        this.homePage = new HomePage(this.driver);
-        this.addNote();
         this.homePage.deleteFirstNote();
         this.getPage("/");
         this.homePage.openNotesTab();
 
         assertThrows(NoSuchElementException.class, () -> this.homePage.getFirstNote());
-    }
 
-    @Test
-    public void testEditNote() {
-        this.homePage = new HomePage(this.driver);
         this.addNote();
 
         String updateNoteTitle = "My updated title";
@@ -62,10 +40,23 @@ public class NotesTest extends BaseTest {
         this.getPage("/");
         this.homePage.openNotesTab();
 
-        Note expectedNote = this.homePage.getFirstNote();
+        expectedNote = this.homePage.getFirstNote();
 
         assertEquals(expectedNote.getNoteTitle(), updateNoteTitle);
         assertEquals(expectedNote.getNoteDescription(), updateNoteDescription);
+    }
+
+    private void addNote() {
+        String title = "My note title";
+        String description = "This is a test note description";
+
+        this.addNote(title, description);
+    }
+
+    private void addNote(String title, String description) {
+        this.homePage.addNote(title, description);
+        this.getPage("/");
+        this.homePage.openNotesTab();
     }
 
 }
