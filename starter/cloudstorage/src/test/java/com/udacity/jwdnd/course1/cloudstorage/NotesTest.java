@@ -13,13 +13,15 @@ public class NotesTest extends BaseTest {
 
     @Test
     public void testCreateDeleteEditNote() {
+        this.createUserAndLogin();
+
         this.homePage = new HomePage(this.driver);
 
         String noteTitle = "My note title";
         String noteDescription = "This is a test note description";
 
         this.addNote(noteTitle, noteDescription);
-
+        this.getPage("/");
         Note expectedNote = this.homePage.getFirstNote();
 
         assertEquals(expectedNote.getNoteTitle(), noteTitle);

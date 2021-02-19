@@ -4,8 +4,13 @@ import com.udacity.jwdnd.course1.cloudstorage.pages.LoginPage;
 import com.udacity.jwdnd.course1.cloudstorage.pages.SignUpPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
@@ -20,14 +25,13 @@ abstract class BaseTest {
 
     @BeforeAll
     static void beforeAll() {
-        WebDriverManager.chromedriver().setup();
+        WebDriverManager.chromiumdriver().setup();
     }
 
     @BeforeEach
     public void beforeEach() {
-        this.driver = new ChromeDriver();
+        this.driver = new SafariDriver();
         this.baseURL = "http://localhost:" + this.port;
-        this.createUserAndLogin();
     }
 
     @AfterEach
@@ -40,20 +44,34 @@ abstract class BaseTest {
 
     protected void getPage(String path) {
         this.driver.get(this.baseURL + path);
+        this.waitForPageLoad();
     }
 
     protected void createUserAndLogin() {
         String username = "pzastoup";
         String password = "whatabadpassword";
 
-        this.driver.get(this.baseURL + "/signup");
+        this.getPage("/signup");
         SignUpPage signupPage = new SignUpPage(this.driver);
         signupPage.signup("Peter", "Zastoupil", username, password);
 
-        this.driver.get(this.baseURL + "/login");
+        this.getPage("/login");
         LoginPage loginPage = new LoginPage(this.driver);
         loginPage.login(username, password);
 
-        this.driver.get(this.baseURL + "/");
+        this.waitForUrlToBe("/");
+    }
+
+    protected void waitForUrlToBe(String url) {
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.urlToBe(baseURL + url));
+    }
+
+    protected void waitForPageLoad() {
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver ->
+                ((JavascriptExecutor) this.driver).executeScript("return document.readyState")
+                        .toString().equals("complete")
+        );
     }
 }

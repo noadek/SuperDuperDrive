@@ -5,11 +5,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class HomePage {
+public class HomePage extends BasePage {
+    public static final String NOTE_TAB_ID = "nav-notes-tab";
     public static final String ADD_NOTE_BUTTON = "add-note-button";
     public static final String NOTE_TITLE = "noteTitle";
     public static final String NOTE_DESCRIPTION = "noteDescription";
@@ -17,32 +16,26 @@ public class HomePage {
     public static final String NOTE_TABLE_ID = "userTable";
     public static final String NOTE_TITLE_CELL = "note-title";
     public static final String NOTE_DESCRIPTION_CELL = "note-description";
-
-    @FindBy(id = "logout-button")
-    private WebElement logoutButton;
+    public static final String LOGOUT_BUTTON_ID = "logout-button";
 
     @FindBy(id = "nav-files-tab")
     private WebElement filesTab;
 
-    @FindBy(id = "nav-notes-tab")
-    private WebElement notesTab;
-
     @FindBy(id = "nav-credentials-tab")
     private WebElement credentialsTab;
 
-    private WebDriverWait wait;
-
     public HomePage(WebDriver driver) {
-        PageFactory.initElements(driver, this);
-        this.wait = new WebDriverWait(driver, 5);
+        super(driver);
     }
 
     public void logout() {
-        this.logoutButton.click();
+        WebElement logoutButton = this.waitUntilClickable(By.id(LOGOUT_BUTTON_ID));
+        logoutButton.click();
     }
 
     public void openNotesTab() {
-        this.notesTab.click();
+        WebElement notesTab = this.waitUntilClickable(By.id(NOTE_TAB_ID));
+        notesTab.click();
     }
 
     public void addNote(String noteTitle, String noteDescription) {

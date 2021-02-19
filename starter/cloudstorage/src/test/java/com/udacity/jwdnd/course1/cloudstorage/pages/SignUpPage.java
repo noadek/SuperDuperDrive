@@ -1,13 +1,13 @@
 package com.udacity.jwdnd.course1.cloudstorage.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class SignUpPage {
-    @FindBy(id = "success-msg")
-    private WebElement successMessageElement;
+public class SignUpPage extends BasePage {
+    public static final String SUCCESS_MESSAGE_ID = "success-msg";
 
     @FindBy(id = "error-msg")
     private WebElement errorMessageElement;
@@ -28,7 +28,7 @@ public class SignUpPage {
     private WebElement submitButton;
 
     public SignUpPage(WebDriver driver) {
-        PageFactory.initElements(driver, this);
+        super(driver);
     }
 
     public void signup(String firstName, String lastName, String username, String password) {
@@ -40,6 +40,6 @@ public class SignUpPage {
     }
 
     public WebElement getSuccessMessageElement() {
-        return this.successMessageElement;
+        return this.wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(SUCCESS_MESSAGE_ID)));
     }
 }

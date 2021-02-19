@@ -11,25 +11,25 @@ public class AuthenticationTests extends BaseTest {
     @Test
     public void testUnauthorizedUserCanOnlyAccessAuthPages() {
         this.getPage("/login");
-        assertEquals(baseURL + "/login" , this.driver.getCurrentUrl());
+        assertEquals(this.baseURL + "/login" , this.driver.getCurrentUrl());
 
         this.getPage("/signup");
-        assertEquals(baseURL + "/signup" , this.driver.getCurrentUrl());
+        assertEquals(this.baseURL + "/signup" , this.driver.getCurrentUrl());
 
         this.getPage("/");
-        assertEquals(baseURL + "/login" , this.driver.getCurrentUrl());
+        assertEquals(this.baseURL + "/login" , this.driver.getCurrentUrl());
     }
 
     @Test
     public void testWrongUsernameOrPasswordShowsErrorMessage() {
         String username = "pzastoup";
-        String password = "whatabadpassword";
+        String password = "whatawrongpassword";
 
         this.getPage("/login");
         LoginPage loginPage = new LoginPage(this.driver);
         loginPage.login(username, password);
 
-        this.getPage("/login?error");
+        this.waitForUrlToBe("/login?error");
         loginPage = new LoginPage(this.driver);
         assertTrue(loginPage.getErrorMessageElement().isDisplayed());
     }
@@ -47,12 +47,12 @@ public class AuthenticationTests extends BaseTest {
         this.getPage("/login");
         LoginPage loginPage = new LoginPage(this.driver);
         loginPage.login(username, password);
+        this.waitForUrlToBe("/");
 
         this.getPage("/");
         HomePage homePage = new HomePage(this.driver);
         homePage.logout();
-
-        this.getPage("/login");
+        this.waitForUrlToBe("/login");
 
         // attempt to access home page after logout
         this.getPage("/");
