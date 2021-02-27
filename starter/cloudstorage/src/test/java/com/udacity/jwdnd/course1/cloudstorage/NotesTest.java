@@ -1,7 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
 import com.udacity.jwdnd.course1.cloudstorage.models.Note;
-import com.udacity.jwdnd.course1.cloudstorage.pages.HomePage;
+import com.udacity.jwdnd.course1.cloudstorage.pages.NotesTabPage;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.NoSuchElementException;
 
@@ -9,56 +9,49 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class NotesTest extends BaseTest {
 
-    private HomePage homePage;
+    private NotesTabPage notesTabPage;
 
     @Test
-    public void testCreateDeleteEditNote() {
+    public void testCreateDeleteEditFlow() {
         this.createUserAndLogin();
 
-        this.homePage = new HomePage(this.driver);
+        this.notesTabPage = new NotesTabPage(this.driver);
 
         String noteTitle = "My note title";
         String noteDescription = "This is a test note description";
 
         this.addNote(noteTitle, noteDescription);
         this.getPage("/");
-        Note expectedNote = this.homePage.getFirstNote();
+        Note note = this.notesTabPage.getFirstNote();
 
-        assertEquals(expectedNote.getNoteTitle(), noteTitle);
-        assertEquals(expectedNote.getNoteDescription(), noteDescription);
+        assertEquals(note.getNoteTitle(), noteTitle);
+        assertEquals(note.getNoteDescription(), noteDescription);
 
-        this.homePage.deleteFirstNote();
+        this.notesTabPage.deleteFirstNote();
         this.getPage("/");
-        this.homePage.openNotesTab();
+        this.notesTabPage.openNotesTab();
 
-        assertThrows(NoSuchElementException.class, () -> this.homePage.getFirstNote());
+        assertThrows(NoSuchElementException.class, () -> this.notesTabPage.getFirstNote());
 
-        this.addNote();
+        this.addNote(noteTitle, noteDescription);
 
         String updateNoteTitle = "My updated title";
         String updateNoteDescription = "This is an updated note description";
 
-        this.homePage.editNote(updateNoteTitle, updateNoteDescription);
+        this.notesTabPage.editNote(updateNoteTitle, updateNoteDescription);
         this.getPage("/");
-        this.homePage.openNotesTab();
+        this.notesTabPage.openNotesTab();
 
-        expectedNote = this.homePage.getFirstNote();
+        note = this.notesTabPage.getFirstNote();
 
-        assertEquals(expectedNote.getNoteTitle(), updateNoteTitle);
-        assertEquals(expectedNote.getNoteDescription(), updateNoteDescription);
-    }
-
-    private void addNote() {
-        String title = "My note title";
-        String description = "This is a test note description";
-
-        this.addNote(title, description);
+        assertEquals(note.getNoteTitle(), updateNoteTitle);
+        assertEquals(note.getNoteDescription(), updateNoteDescription);
     }
 
     private void addNote(String title, String description) {
-        this.homePage.addNote(title, description);
+        this.notesTabPage.addNote(title, description);
         this.getPage("/");
-        this.homePage.openNotesTab();
+        this.notesTabPage.openNotesTab();
     }
 
 }
