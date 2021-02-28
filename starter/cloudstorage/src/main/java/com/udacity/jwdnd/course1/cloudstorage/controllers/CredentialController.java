@@ -37,7 +37,7 @@ public class CredentialController {
         String error = null;
         String success = null;
 
-        User user = this.userService.getUser(authentication.getName());
+        User user = this.userService.getCurrentUser(authentication);
 
         SecureRandom random = new SecureRandom();
         byte[] key = new byte[16];
@@ -79,7 +79,7 @@ public class CredentialController {
         String error = null;
         String success = null;
 
-        User user = this.userService.getUser(authentication.getName());
+        User user = this.userService.getCurrentUser(authentication);
         Credential credential = this.credentialService.getCredential(id);
 
         boolean canDelete = credential.getUserId().equals(user.getUserId());

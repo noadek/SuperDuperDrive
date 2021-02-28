@@ -66,6 +66,21 @@ public class CredentialsTabPage extends HomePage {
         passwordField.submit();
     }
 
+    public Credential getEditFieldsCredentials() {
+        this.openCredentialsTab();
+
+        WebElement firstRow = this.getTableRow();
+        WebElement editButton = firstRow.findElement(By.tagName("button"));
+        editButton.click();
+
+        WebElement credentialModal = this.getCredentialModal();
+        String url = credentialModal.findElement(By.name(URL_FIELD_NAME)).getAttribute("value");
+        String username = credentialModal.findElement(By.name(USERNAME_FIELD_NAME)).getAttribute("value");
+        String password = credentialModal.findElement(By.name(PASSWORD_FIELD_NAME)).getAttribute("value");
+
+        return new Credential(null, url, username, null, password, null);
+    }
+
     public Credential getFirstCredential() {
         this.openCredentialsTab();
 

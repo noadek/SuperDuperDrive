@@ -35,6 +35,13 @@ public class CredentialTest extends BaseTest {
         assertThrows(NoSuchElementException.class, () -> this.credentialsTabPage.getFirstCredential());
 
         this.addCredential(url, username, password);
+        credential = this.credentialsTabPage.getEditFieldsCredentials();
+
+        assertEquals(credential.getUrl(), url);
+        assertEquals(credential.getUsername(), username);
+        assertEquals(credential.getPassword(), password);
+
+        this.getPage("/");
 
         String updatedUrl = "http://test.com/";
         String updatedUsername = "updatedUsername";

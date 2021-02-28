@@ -28,7 +28,7 @@ public class NoteController {
         String error = null;
         String success = null;
 
-        User user = this.userService.getUser(authentication.getName());
+        User user = this.userService.getCurrentUser(authentication);
         note.setUserId(user.getUserId());
 
         if (note.getNoteId() == null) {
@@ -61,7 +61,7 @@ public class NoteController {
         String error = null;
         String success = null;
 
-        User user = this.userService.getUser(authentication.getName());
+        User user = this.userService.getCurrentUser(authentication);
         Note note = this.noteService.getNote(id);
 
         boolean canDelete = note.getUserId().equals(user.getUserId());

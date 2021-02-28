@@ -9,9 +9,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 public class HomePage extends BasePage {
     protected static final String LOGOUT_BUTTON_ID = "logout-button";
 
-    @FindBy(id = "nav-files-tab")
-    private WebElement filesTab;
-
     public HomePage(WebDriver driver) {
         super(driver);
     }
