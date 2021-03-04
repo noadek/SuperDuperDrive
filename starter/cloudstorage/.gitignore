@@ -4,7 +4,7 @@ target/
 !**/src/main/**
 !**/src/test/**
 
-### STS ###
+### STS / eclipse ###
 .apt_generated
 .classpath
 .factorypath
@@ -12,6 +12,19 @@ target/
 .settings
 .springBeans
 .sts4-cache
+
+*.pydevproject
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
 
 ### IntelliJ IDEA ###
 .idea
