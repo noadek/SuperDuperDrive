@@ -16,7 +16,7 @@
         </form>
     </div>
 
-    <div id="message">
+    <div id="message" style="clear:both; margin-top:10px;">
         <div id="success-msg" th:if="${#request.getParameter('success')}" class="alert alert-dark">
             <span th:text="${#request.getParameter('success')}"></span>
         </div>
