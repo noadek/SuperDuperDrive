@@ -42,10 +42,11 @@ public class AuthenticationTests extends BaseTest {
         this.getPage("/signup");
         SignUpPage signupPage = new SignUpPage(this.driver);
         signupPage.signup("Peter", "Zastoupil", username, password);
-        assertTrue(signupPage.getSuccessMessageElement().isDisplayed());
 
-        this.getPage("/login");
+        this.waitForUrlToBe("/login?signupSuccess=true");
         LoginPage loginPage = new LoginPage(this.driver);
+        assertTrue(loginPage.getSuccessMessageElement().isDisplayed());
+        
         loginPage.login(username, password);
         this.waitForUrlToBe("/");
 
